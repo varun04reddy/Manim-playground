@@ -4,7 +4,7 @@ An interactive dashboard to **upload a chart image**, **click the exact data poi
 
 ---
 
-## ✨ What it does
+## What it does
 
 * Upload a figure image (`.png`, `.jpg`, …).
 * Optionally rotate to correct camera skew.
@@ -15,7 +15,7 @@ An interactive dashboard to **upload a chart image**, **click the exact data poi
 
 ---
 
-## 🧰 Tech & Dependencies
+## Tech & Dependencies
 
 * Streamlit (UI)
 * streamlit-drawable-canvas (clickable canvas)
@@ -25,7 +25,7 @@ An interactive dashboard to **upload a chart image**, **click the exact data poi
 
 ---
 
-## 🚀 Quickstart
+## Quickstart
 
 1. Create/activate a virtual environment (recommended).
 2. Install dependencies:
@@ -51,7 +51,7 @@ An interactive dashboard to **upload a chart image**, **click the exact data poi
 
 ---
 
-## 🖼️ Using the Dashboard
+## Using the Dashboard
 
 1. **Upload Image**
    Drag-and-drop the book figure/photo into the uploader.
@@ -80,7 +80,7 @@ An interactive dashboard to **upload a chart image**, **click the exact data poi
 
 ---
 
-## 🗂️ Output Files
+## Output Files
 
 You’ll get two files, both derived from the image currently shown (after any rotation you applied):
 
@@ -114,53 +114,6 @@ px_x,px_y,norm_x,norm_y
 
 ---
 
-## 📐 Coordinate System
-
-* Coordinates are in **image pixel space**.
-* X grows to the **right**, Y grows **downward** (top-left is 0,0).
-* Normalized coordinates are simply `(x/width, y/height)` and let you reuse points across scaled copies of the image.
-
----
-
-## 🧭 User Controls
-
-* **Left click:** add point
-* **Undo last:** remove the most recent point
-* **Delete nearest:** removes the point closest to your cursor
-* **Clear all:** removes all points
-* **Sort left→right:** reorders by X (useful for fitting/plotting)
-* **Rotate slider:** fixes small photo tilt
-* **Point radius:** visual size only (does not change data)
-
----
-
-## 🔌 Integrating with Plotting/Analytics
-
-Typical workflow to plot or animate:
-
-1. Load the **JSON** in your plotting script/tool.
-2. Sort the points by `px_x` (if not already sorted).
-3. Plot the points over the **same rotated image** (or record and reapply the `rotate_deg` noted in JSON).
-4. Fit polynomials of desired degrees using the `points_px` array as control points.
-5. Render/animate your overlay curve(s) over the image.
-
-> The dashboard is plotting-library-agnostic. Use Matplotlib, Plotly, or any other tool you prefer—just read the JSON and go.
-
----
-
-## 📊 Analysis Notebook
-
-The included Jupyter notebook (`notebooks/plot_points.ipynb`) provides comprehensive analysis tools:
-
-### Features:
-- **Load Data**: Import CSV or JSON exports from the dashboard
-- **Pixel Space Plotting**: Visualize points in original image coordinates
-- **Coordinate Transformation**: Convert to mathematical XY plane (origin at bottom-left)
-- **Extended Range Plots**: See polynomial behavior with 30% whitespace padding to identify overfitting
-- **Side-by-Side Comparison**: Compare polynomial degrees 2-6 in a grid view
-- **Normalized Coordinates**: Transform to unit square [0,1]×[0,1] for Manim
-- **Export for Animation**: Save transformed coordinates and polynomial coefficients as JSON
-
 ### Usage:
 1. Export points from the Streamlit dashboard to `data/`
 2. Open `notebooks/plot_points.ipynb`
@@ -169,27 +122,7 @@ The included Jupyter notebook (`notebooks/plot_points.ipynb`) provides comprehen
 
 ---
 
-## ✅ Acceptance Criteria
-
-* Users can upload an image and click at least 5 points reliably.
-* Edit actions (undo, delete nearest, clear, sort) work as described.
-* **JSON/CSV** export matches the schema and includes normalized values.
-* Re-loading the same image with the same `rotate_deg` reproduces the overlay alignment.
-* Optional in-dashboard preview correctly displays points and example fits.
-
----
-
-## 🧩 Nice-to-Haves (Post-MVP)
-
-* Zoom/pan while clicking.
-* Cropping tool (pre-click).
-* Import/append from existing JSON.
-* Adjustable marker/label styling.
-* Keyboard entry for precise pixel coordinates.
-
----
-
-## 📝 Project Structure
+## Project Structure
 
 ```
 Manim-playground/
@@ -214,25 +147,3 @@ Manim-playground/
 - **`notebooks/`**: Jupyter notebooks for plotting, analysis, and preparing data for Manim animations
 
 ---
-
-## 🔒 Privacy & Data
-
-* Images and coordinates remain local to your machine.
-* No network calls are required for the MVP.
-
----
-
-## 🆘 Troubleshooting
-
-* **Points don’t line up after export:**
-  Ensure the same rotation (`rotate_deg`) is applied when overlaying.
-* **Image looks skewed:**
-  Nudge the **Rotate** slider by ±0.5–2.0 degrees.
-* **Can’t click points:**
-  Confirm **Enable canvas** is toggled on.
-
----
-
-## 📄 License
-
-MIT — free to use, modify, and distribute. Attribution appreciated.

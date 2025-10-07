@@ -30,16 +30,22 @@ An interactive dashboard to **upload a chart image**, **click the exact data poi
 1. Create/activate a virtual environment (recommended).
 2. Install dependencies:
 
+   ```bash
+   pip install -r streamlit_app/requirements.txt
    ```
-   pip install streamlit streamlit-drawable-canvas pillow numpy matplotlib
-   ```
-3. Place the Streamlit app file in your project (e.g., `streamlit_app.py`).
-4. Run the dashboard:
 
+   Or manually:
+   ```bash
+   pip install streamlit==1.28.0 streamlit-drawable-canvas==0.9.3 pillow numpy matplotlib pandas
    ```
-   streamlit run streamlit_app.py
+
+3. Run the dashboard:
+
+   ```bash
+   streamlit run streamlit_app/streamlit_app.py
    ```
-5. Open the local URL Streamlit prints (usually `http://localhost:8501`).
+
+4. Open the local URL Streamlit prints (usually `http://localhost:8501`).
 
 > **Note:** The app runs entirely client-side on your machine. No images or coordinates are sent to any server unless you choose to.
 
@@ -142,6 +148,27 @@ Typical workflow to plot or animate:
 
 ---
 
+## 📊 Analysis Notebook
+
+The included Jupyter notebook (`notebooks/plot_points.ipynb`) provides comprehensive analysis tools:
+
+### Features:
+- **Load Data**: Import CSV or JSON exports from the dashboard
+- **Pixel Space Plotting**: Visualize points in original image coordinates
+- **Coordinate Transformation**: Convert to mathematical XY plane (origin at bottom-left)
+- **Extended Range Plots**: See polynomial behavior with 30% whitespace padding to identify overfitting
+- **Side-by-Side Comparison**: Compare polynomial degrees 2-6 in a grid view
+- **Normalized Coordinates**: Transform to unit square [0,1]×[0,1] for Manim
+- **Export for Animation**: Save transformed coordinates and polynomial coefficients as JSON
+
+### Usage:
+1. Export points from the Streamlit dashboard to `data/`
+2. Open `notebooks/plot_points.ipynb`
+3. Update file paths in the notebook cells to point to your data
+4. Run cells to visualize, analyze, and export for Manim
+
+---
+
 ## ✅ Acceptance Criteria
 
 * Users can upload an image and click at least 5 points reliably.
@@ -162,16 +189,29 @@ Typical workflow to plot or animate:
 
 ---
 
-## 📝 Project Structure (suggested)
+## 📝 Project Structure
 
 ```
-point-finder/
-├─ README.md
-├─ streamlit_app.py
-├─ requirements.txt
-└─ samples/
-   └─ book_figure.jpg
+Manim-playground/
+├── README.md
+├── streamlit_app/          # Streamlit dashboard application
+│   ├── streamlit_app.py    # Main dashboard code
+│   └── requirements.txt    # Dashboard dependencies
+├── data/                   # Data files and images
+│   ├── test_image.png      # Sample image
+│   ├── sample_points.csv   # Sample CSV export
+│   ├── sample_points.json  # Sample JSON export
+│   └── *_points.csv/json   # Downloaded point data goes here
+├── notebooks/              # Jupyter notebooks for analysis
+│   └── plot_points.ipynb   # Visualization and polynomial fitting
+└── venv/                   # Virtual environment (not tracked)
 ```
+
+### Directory Purpose
+
+- **`streamlit_app/`**: Contains the interactive Point Finder Dashboard for extracting coordinates from images
+- **`data/`**: Store your images and exported point data (CSV/JSON) here
+- **`notebooks/`**: Jupyter notebooks for plotting, analysis, and preparing data for Manim animations
 
 ---
 

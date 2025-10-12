@@ -20,6 +20,8 @@ if 'uploaded_image' not in st.session_state:
     st.session_state.uploaded_image = None
 if 'rotation_angle' not in st.session_state:
     st.session_state.rotation_angle = 0.0
+if 'canvas_key' not in st.session_state:
+    st.session_state.canvas_key = 0
 
 # Sidebar controls
 st.sidebar.header("⚙️ Controls")
@@ -73,10 +75,12 @@ if st.session_state.uploaded_image is not None:
     if col1.button("↩️ Undo last"):
         if st.session_state.points:
             st.session_state.points.pop()
+            st.session_state.canvas_key += 1
             st.rerun()
 
     if col2.button("🗑️ Clear all"):
         st.session_state.points = []
+        st.session_state.canvas_key += 1
         st.rerun()
 
     sort_points = st.sidebar.checkbox("Sort left→right", value=False, help="Sort points by X coordinate")
@@ -95,7 +99,7 @@ if st.session_state.uploaded_image is not None:
         width=img_width,
         drawing_mode="point" if enable_canvas else "transform",
         point_display_radius=point_radius,
-        key="canvas",
+        key=f"canvas_{st.session_state.canvas_key}",
     )
 
     # Process canvas data
@@ -106,8 +110,10 @@ if st.session_state.uploaded_image is not None:
         new_points = []
         for obj in objects:
             if obj.get("type") == "circle":
-                x = obj.get("left", 0)
-                y = obj.get("top", 0)
+                # Canvas gives top-left corner, add radius to get center
+                radius = obj.get("radius", point_radius)
+                x = obj.get("left", 0) + radius
+                y = obj.get("top", 0) + radius
                 new_points.append([x, y])
 
         # Update points if changed
